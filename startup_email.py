@@ -60,7 +60,7 @@ def send_email(ip_address: str, subject: str, content: str= "") -> None:
     message += "CC: {}\r\n".format(creds["cc"])
     message += "Subject: {}\r\n".format(subject)
     message += "\r\n"
-
+    
     if content == "":
         # Email body
         message += """ 
@@ -72,7 +72,7 @@ def send_email(ip_address: str, subject: str, content: str= "") -> None:
         """.format(ip_address)
     else:
         # use the function call vaiable
-        pass
+        message += content
 
     # Send the email
     context = ssl.create_default_context()
