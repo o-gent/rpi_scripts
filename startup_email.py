@@ -50,7 +50,7 @@ def load_credentials(file_name: str = "credentials.json") -> dict:
             raise FileNotFoundError("Need to have a credentials file!")
 
 
-def send_email(ip_address: str) -> None:
+def send_email(ip_address: str, subject: str, content: str= "") -> None:
     # fetch user information
     creds = load_credentials()
 
@@ -58,17 +58,21 @@ def send_email(ip_address: str) -> None:
     message = "From: {}\r\n".format(creds["fromaddr"])
     message += "To: {}\r\n".format(creds["toaddr"])
     message += "CC: {}\r\n".format(creds["cc"])
-    message += "Subject: {}\r\n".format("VPN IP change")
+    message += "Subject: {}\r\n".format(subject)
     message += "\r\n"
 
-    # Email body
-    message += """ 
-    Hello,
+    if content == "":
+        # Email body
+        message += """ 
+        Hello,
 
-    The IP address has changed again.
+        The IP address has changed again.
 
-    it's {}
-    """.format(ip_address)
+        it's {}
+        """.format(ip_address)
+    else:
+        # use the function call vaiable
+        pass
 
     # Send the email
     context = ssl.create_default_context()
@@ -118,7 +122,7 @@ if __name__ == "__main__":
             f.write(ip_address)
 
             try:
-                send_email(ip_address)
+                send_email(ip_address, "VPN IP address changed")
                 logging.info("email successfully sent")
             except Exception as e:
                 logging.warning("email could not be sent..", stack_info=True)
