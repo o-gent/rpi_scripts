@@ -17,12 +17,12 @@ A script for checking if an IP address has changed, if it has send an email with
 import sys
 import urllib.request
 import smtplib, ssl
-from email.mime.multipart import MIMEMultipart
-
-import sys
 import logging
 import json
 import os
+
+
+__author__ = ("github.com/o-gent")
 
 
 logging.basicConfig(
@@ -36,14 +36,14 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def check_in():
+def check_in() -> str:
     """ Fetches public IP address """
     ip = urllib.request.urlopen('https://api.ipify.org').read().decode()
     logging.info(ip)
     return ip
 
 
-def load_credentials(file_name = "credentials.json"):
+def load_credentials(file_name: str = "credentials.json") -> dict:
     """
     Get email credentials from credentials.json
     """
@@ -57,11 +57,11 @@ def load_credentials(file_name = "credentials.json"):
     else:
         blank = {"port": 0, "smtp_server": "", "sender_email": "", "receiver_email": "", "password": "", "toaddr": "", "cc": "", "fromaddr": ""}
         with open(file_name, "w") as f:
-            json.dump(f, blank)
+            json.dump(blank, f)
             raise FileNotFoundError("Need to have a credentials file!")
 
 
-def send_email(ip_address):
+def send_email(ip_address: str) -> None:
     # fetch user information
     creds = load_credentials()
 

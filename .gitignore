@@ -2,3 +2,4 @@ credentials.json
 .vscode
 debug.log
 address.txt
+.mypy_cache
