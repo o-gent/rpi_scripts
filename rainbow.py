@@ -1,3 +1,6 @@
+"""
+Makes rainbows using blinkt
+"""
 import colorsys
 import time
 import datetime

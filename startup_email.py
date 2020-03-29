@@ -25,17 +25,6 @@ import os
 __author__ = ("github.com/o-gent")
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format= '%(asctime)s %(levelname)s %(message)s ',
-    handlers=[
-        logging.FileHandler("/home/pi/scripts/debug.log"),
-        logging.StreamHandler(sys.stdout)
-    ])
-
-logger = logging.getLogger()
-
-
 def check_in() -> str:
     """ Fetches public IP address """
     ip = urllib.request.urlopen('https://api.ipify.org').read().decode()
@@ -55,7 +44,7 @@ def load_credentials(file_name: str = "credentials.json") -> dict:
 
     # else make a new json
     else:
-        blank = {"port": 0, "smtp_server": "", "sender_email": "", "receiver_email": "", "password": "", "toaddr": "", "cc": "", "fromaddr": ""}
+        blank = {"port": 0, "smtp_server": "", "sender_email": "", "receiver_email": "", "password": "", "toaddr": "", "cc": "", "fromaddr": "", "home_path": ""}
         with open(file_name, "w") as f:
             json.dump(blank, f)
             raise FileNotFoundError("Need to have a credentials file!")
@@ -90,13 +79,28 @@ def send_email(ip_address: str) -> None:
 
 
 if __name__ == "__main__":
+    # get user credentials 
+    creds = load_credentials()
+
+    # set up the logger
+    logging.basicConfig(
+    level=logging.INFO,
+    format= '%(asctime)s %(levelname)s %(message)s ',
+    handlers=[
+        logging.FileHandler(creds["home_path"] + "/debug.log"),
+        logging.StreamHandler(sys.stdout)
+    ])
+    logger = logging.getLogger()
+
+    # Get current public IP address
     try:
         ip_address = check_in()
     except:
         logging.warning("IP address could not be read")
         raise
-
-    with open("/home/pi/scripts/address.txt", "r+") as f:
+    
+    # Compare to the previous IP address
+    with open(creds["home_path"] + "/address.txt", "r+") as f:
         try: 
             current = f.readlines()[0]
             logging.info("Recorded ip is " + current)
