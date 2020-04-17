@@ -4,3 +4,4 @@ debug.log
 address.txt
 .mypy_cache
 __pycache__
+debug_cex.log

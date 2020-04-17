@@ -32,7 +32,7 @@ def check_in() -> str:
     return ip
 
 
-def load_credentials(file_name: str = "credentials.json") -> dict:
+def load_credentials(file_name: str = "/home/pi/scripts/credentials.json") -> dict:
     """
     Get email credentials from credentials.json
     """
