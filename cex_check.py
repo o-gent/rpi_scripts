@@ -30,7 +30,7 @@ handlers=[
 logger = logging.getLogger()
 
 
-if stock == 0:
+if stock != 1:
     #is in stock now
 
     try:
